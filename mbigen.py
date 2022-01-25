@@ -2,13 +2,13 @@ from audioop import cross
 from crypt import methods
 import json
 from flask import Flask, request, jsonify
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from random import randint, getrandbits, choice
 import string
 
 app = Flask(__name__)
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app)
+#app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route("/")
 def hello_world():
@@ -16,7 +16,6 @@ def hello_world():
 
 
 @app.route("/generate")
-@cross_origin
 def generate():
     """
     The MBI has letters and numbers. Here's an example: 1EG4-TE5-MK73
@@ -50,7 +49,6 @@ def generate():
 
 
 @app.route("/verify", methods=['POST'])
-@cross_origin
 def verify():
     if request.method == 'POST':
         invalidLetters = ['S', 'L', 'O', 'I', 'B', 'Z']
