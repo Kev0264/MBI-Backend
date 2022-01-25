@@ -73,3 +73,6 @@ def verify():
 
     # We made it through the gauntlet
     return json.dumps(True)
+
+if __name__ == '__main__':
+    app.run()

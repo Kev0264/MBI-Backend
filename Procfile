@@ -1,1 +1,1 @@
-web: gunicorn mbigen:app --preload
+web: gunicorn mbigen:app
