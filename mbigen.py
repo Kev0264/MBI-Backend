@@ -8,24 +8,12 @@ import string
 
 app = Flask(__name__)
 CORS(app)
-#app.config['CORS_HEADERS'] = 'Content-Type'
-
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
 
 @app.route("/generate")
 def generate():
-    """
-    The MBI has letters and numbers. Here's an example: 1EG4-TE5-MK73
-    • The MBI's 2nd, 5th, 8th, and 9th characters are always letters.
-    • Characters 1, 4, 7, 10, and 11 are always numbers.
-    • The 3rd and 6th characters are letters or numbers.
-    • We don't use dashes in the MBI. They aren't part of our computer systems and we don't use them in file formats.
-    """
 
     invalidLetters = ['S', 'L', 'O', 'I', 'B', 'Z']
+    # Create a string of the valid characters by grabbing the alphabet and removing the invalid letters
     validLetters = "".join(i for i in string.ascii_uppercase if i not in invalidLetters)
 
     mbiList = []
@@ -54,10 +42,14 @@ def verify():
         invalidLetters = ['S', 'L', 'O', 'I', 'B', 'Z']
 
         mbi = request.form['mbi']
+
+        # Make sure we received something
         if mbi is None: return json.dumps(False)
+
         # Remove the dashes (they're optional anyway)
         mbi = mbi.replace('-', '')
         mbi = mbi.upper()
+
         # Convert to a list of chars so it's easier to check each character
         mbiList = list(mbi)
 
@@ -75,8 +67,12 @@ def verify():
         if not mbiList[9].isnumeric(): return json.dumps(False)
         if not mbiList[10].isnumeric(): return json.dumps(False)
 
-    # We made it through the gauntlet
-    return json.dumps(True)
+        # We made it through the gauntlet
+        return json.dumps(True)
+    
+    # Default return
+    return json.dumps(False)
 
 if __name__ == '__main__':
+    # So the Procfile can start
     app.run()
