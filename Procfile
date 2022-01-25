@@ -1,1 +1,1 @@
-web: gunicorn mbigen:app
+web: gunicorn mbiapp:app
